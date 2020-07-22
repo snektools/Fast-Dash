@@ -1,19 +1,20 @@
 from Data_Handling.DataSource import DataSource
 import Data_Handling.dates as dates
+import datetime
 import pandas as pd
-
+import pyodbc
 
 
 class SqlDataSource(DataSource):
     def __init__(
             self,
             sql_filepath,
-            conn_obj,
-            replace
+            conn_str='DRIVER=SQL Server;SERVER=DLNWTSR140;Trusted_Connection=Yes',
+            replace=None,
     ):
         self._sql_filepath = sql_filepath
         self._read_file()
-        self._connection = conn_obj
+        self._conn_str = conn_str
         self.replace = replace
         self._start_date = None
         self._end_date = None
@@ -32,25 +33,27 @@ class SqlDataSource(DataSource):
             self,
             query_str,
     ):
-        self._data = pd.read_sql_query(sql=query_str, con=self._connection)
-        # TODO: Do we need to close connection?
+        try:
+            connection = pyodbc.connect(self._conn_str)
+            self._data = pd.read_sql_query(sql=query_str, con=connection)
+        except ConnectionError:
+            print('Connection failed')
+        finally:
+            connection.close()
 
     def get_data(
             self,
             start_date=None,
             end_date=None,
-            days=0.5
+            time_frame: datetime.timedelta = datetime.timedelta(days=0.5)
     ):
         end_date = end_date or dates.create_end_date()
-        start_date = start_date or dates.create_start_date(end_date, delta=days)
+        start_date = start_date or dates.create_start_date(end_date, delta=time_frame)
         if self._is_new_request(start_date, end_date):
             self._start_date = start_date
             self._end_date = end_date
-            self._build_query_str(
-                start_date=start_date,
-                end_date=end_date,
-            )
-            self._execute_query()
+            query_str = self._build_query_str(start_date=start_date,end_date=end_date,)
+            self._execute_query(query_str=query_str)
 
         return self._data
 
