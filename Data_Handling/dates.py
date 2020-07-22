@@ -34,10 +34,9 @@ def within(
 
 def datetime_to_str(date: datetime.datetime) -> str:
     if isinstance(date, str):
-        output = date
+        return date
     else:
-        output = date.strftime('%Y-%m-%d %H:%M:%S')
-    return f"'{output}'"
+        return date.strftime('%Y-%m-%d %H:%M:%S')
 
 
 def str_to_datetime(date: str) -> datetime.datetime:
