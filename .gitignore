@@ -1,4 +1,5 @@
 *.xml
 *.pyc
+\.pytest_cache
 \.idea
 \venv
