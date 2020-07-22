@@ -9,7 +9,7 @@ def create_start_date(end_date, delta: datetime.timedelta = datetime.timedelta(d
     return end_date - delta
 
 
-​def within(
+def within(
         time1,
         time2,
         weeks=0,
