@@ -9,15 +9,7 @@ def create_start_date(end_date, delta: datetime.timedelta = datetime.timedelta(d
     return end_date - delta
 
 
-def datetime_to_sql(date):
-    if isinstance(date, str):
-        output = date
-    else:
-        output = date.strftime('%Y-%m-%d %H:%M:%S')
-    return f"'{output}'"
-
-
-def within(
+​def within(
         time1,
         time2,
         weeks=0,
@@ -35,3 +27,18 @@ def within(
     )
 
     return abs(time1 - time2) < delta
+
+
+def datetime_to_str(date):
+    if isinstance(date, str):
+        output = date
+    else:
+        output = date.strftime('%Y-%m-%d %H:%M:%S')
+    return f"'{output}'"
+
+
+def str_to_datetime(date):
+    if isinstance(date, datetime.datetime):
+        return date
+    else:
+        return datetime.datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
