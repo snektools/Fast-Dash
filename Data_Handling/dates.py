@@ -5,8 +5,8 @@ def create_end_date():
     return datetime.datetime.now()
 
 
-def create_start_date(end_date, delta=0.5):
-    return end_date - datetime.timedelta(days=delta)
+def create_start_date(end_date, delta: datetime.timedelta = datetime.timedelta(days=0.5)):
+    return end_date - delta
 
 
 def datetime_to_sql(date):
