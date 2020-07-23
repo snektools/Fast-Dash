@@ -1,23 +1,26 @@
 import datetime
 
 
-def create_end_date():
+def create_end_date() -> datetime.datetime:
     return datetime.datetime.now()
 
 
-def create_start_date(end_date, delta: datetime.timedelta = datetime.timedelta(days=0.5)):
+def create_start_date(
+        end_date: datetime.datetime,
+        delta: datetime.timedelta = datetime.timedelta(days=0.5),
+) -> datetime.datetime:
     return end_date - delta
 
 
 def within(
-        time1,
-        time2,
-        weeks=0,
-        days=0,
-        hours=0,
-        minutes=0,
-        seconds=0,
-):
+        time1: datetime.datetime,
+        time2: datetime.datetime,
+        weeks: float = 0,
+        days: float = 0,
+        hours: float = 0,
+        minutes: float = 0,
+        seconds: float = 0,
+) -> bool:
     delta = datetime.timedelta(
         weeks=weeks,
         days=days,
@@ -29,15 +32,14 @@ def within(
     return abs(time1 - time2) < delta
 
 
-def datetime_to_str(date):
+def datetime_to_str(date: datetime.datetime) -> str:
     if isinstance(date, str):
-        output = date
+        return date
     else:
-        output = date.strftime('%Y-%m-%d %H:%M:%S')
-    return f"'{output}'"
+        return date.strftime('%Y-%m-%d %H:%M:%S')
 
 
-def str_to_datetime(date):
+def str_to_datetime(date: str) -> datetime.datetime:
     if isinstance(date, datetime.datetime):
         return date
     else:
