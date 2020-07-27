@@ -1,8 +1,9 @@
+from abc import ABC, abstractmethod
 import plotly.graph_objs as go
 import dash_core_components as dcc
 
 
-class Plot:
+class Plot(ABC):
 
     def __init__(self, dcc_id, colorway=None):
         self._id = dcc_id
@@ -16,9 +17,11 @@ class Plot:
     def get_id(self):
         return self._id
 
+    @abstractmethod
     def _read_data(self):
         pass
 
+    @abstractmethod
     def _build_plot_data(self):
         pass
 
