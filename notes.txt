@@ -1,0 +1,1 @@
+Need to develop multiple sessions to avoid cache clash and need to understand connection/requests to the database.
