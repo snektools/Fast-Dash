@@ -5,6 +5,23 @@ import datetime
 import pandas as pd
 import pyodbc
 
+class QueryStringEngine:
+    def __init__(self, *args, **kwargs):
+        self._build_query_string_engine(*args, **kwargs)
+
+    def _build_query_string_engine(self):
+        pass
+
+    def get(self, parameters):
+        pass
+
+def build_data_source(
+        connection_string=None,
+        server=None,
+        query_folder=None,
+        query_name=None,
+):
+    pass
 
 class SqlDataSource(DataSource):
     def __init__(
