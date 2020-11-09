@@ -4,6 +4,7 @@ import Data_Handling.dates as dates
 import datetime
 import pandas as pd
 import pyodbc
+# Use snaql class to pass file path and return queries.
 
 
 class SqlDataSource(DataSource):
@@ -13,11 +14,11 @@ class SqlDataSource(DataSource):
             conn_str='DRIVER=SQL Server;SERVER=DLNWTSR140;Trusted_Connection=Yes',
     ):
         self._sql_filepath = sql_filepath
-        self._sql_file_str = None
         self._read_file()
         self._conn_str = conn_str
         self._start_date = None
         self._end_date = None
+        self._query_string_engine = None  # Snaql
 
     def _read_file(self):
         with open(self._sql_filepath, encoding='utf16') as file:
@@ -29,17 +30,7 @@ class SqlDataSource(DataSource):
             end_date=None,
             replace=None,
     ):
-        query_str = self._sql_file_str
-        query_str = query_str.replace('\n', ' ')
-        query_str = query_str.replace('ÿþ', ' ')
-        query_str = query_str.replace('\r', ' ')
-        query_str = query_str.replace('--[WHERE CLAUSE]', f'WHERE Timestamp BETWEEN {start_date} AND {end_date}')
-
-        if replace:
-            for key, value in replace.items():
-                query_str = query_str.replace(key, value)
-
-        return query_str
+        pass
 
     def _execute_query(
             self,
@@ -48,8 +39,8 @@ class SqlDataSource(DataSource):
         try:
             connection = pyodbc.connect(self._conn_str)
             self._data = pd.read_sql_query(sql=query_str, con=connection)
-        except ConnectionError:
-            print('Connection failed')
+        except pyodbc.Error as e:
+            print(e)
         finally:
             connection.close()
 
