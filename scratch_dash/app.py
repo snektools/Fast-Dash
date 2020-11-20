@@ -7,10 +7,10 @@ from scratch_dash.SQLengines import nwt_engine
 app = dash.Dash(__name__)
 
 sql_source = SqlDataSource(
-    sql_folder_path=r'..\global_queries',
+    sql_folder_path=r'global_queries',
     sql_file_name='generic.sql',
     engine=nwt_engine,
-    # cache=True,
+    cache=True,
 )
 
 pane = ScratchPane(
