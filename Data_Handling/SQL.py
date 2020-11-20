@@ -1,5 +1,4 @@
 from jinjaql import factory
-from Data_Handling.SQLengines import nwt_engine
 import pathlib
 
 
@@ -9,7 +8,7 @@ class SqlDataSource:
             self,
             sql_folder_path,
             sql_file_name,
-            engine=nwt_engine,
+            engine,
             cache=False,
     ):
         self._sql_folder_path = pathlib.Path(sql_folder_path)

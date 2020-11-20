@@ -7,5 +7,8 @@
     {% endif %}
     *
     FROM [{{database}}].dbo.[{{station}}]
+    {% if start_date and end_date %}
+        WHERE [Tim]
+    {% endif %}
     ORDER BY [TimeStamp] DESC
 {% endsql %}
