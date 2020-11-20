@@ -2,3 +2,4 @@ plotly
 pandas
 pyodbc
 dash
+jinjaql
