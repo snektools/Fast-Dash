@@ -6,7 +6,7 @@ from scratch_dash.pane_scratch import ScratchPane
 app = dash.Dash(__name__)
 
 sql_source = SqlDataSource(
-    sql_folder_path=r'global_queries',
+    sql_folder_path=r'..\global_queries',
     sql_file_name='generic.sql',
     # cache=True,
 )
@@ -23,10 +23,10 @@ app.layout = html.Div(
     pane.get_layout()
 )
 
-@app.callback(pane.outputs_1, pane.inputs_1)
-def pane_callback(*inputs):
-    return pane.func_1(*inputs)
-
+for cb in pane:
+    @app.callback(cb.outputs,cb.inputs, cb.states)
+    def func(*inputs):
+        return cb.func(*inputs)
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ from Layout_Components.Visualization.Scatter import Scatter
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
-
+from callbacks.callback import CallbackDefinition
 
 class ScratchPane(Pane):
     def __init__(self, data_source, app, **kwargs):
@@ -13,7 +13,7 @@ class ScratchPane(Pane):
         self._build_visualizations(**kwargs)
         self._build_controls(**kwargs)
         self._build_layout()
-        self._build_callback()
+        self._build_callbacks()
 
     def _build_visualizations(self, **kwargs):
         self._scatter = Scatter(dcc_id='scratchit', data_source=self._data_source, **kwargs)
@@ -58,16 +58,21 @@ class ScratchPane(Pane):
             ]
         )
 
-    def _build_callback(self):
-        self.inputs_1 = [
-            Input(component_id='side', component_property='value'),
-            Input(component_id='machine', component_property='value')
-        ]
-        self.outputs_1 = [Output(component_id=self._scatter.get_id(), component_property='figure')]
-
-        def fn(side, machine):
+    def _build_callbacks(self):
+        def scatter_sort(side, machine):
             return [self._scatter.update_figure(database='C1_RDM',station=machine,column_displayed=side)]
 
-        self.func_1 = fn
+        self._callbacks = [
+            CallbackDefinition(
+                inputs=[
+                    Input(component_id='side', component_property='value'),
+                    Input(component_id='machine', component_property='value'),
+                ],
+                outputs=[
+                    Output(component_id=self._scatter.get_id(), component_property='figure'),
+                ],
+                func=scatter_sort,
+            )
+        ]
 
 

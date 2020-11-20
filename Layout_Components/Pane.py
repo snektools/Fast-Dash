@@ -10,6 +10,10 @@ class Pane(ABC):
     def get_layout(self):
         return self._layout
 
+    def __iter__(self):
+        for cb in self._callbacks:
+            yield cb
+
     @abstractmethod
     def _build_visualizations(self):
         pass
@@ -20,4 +24,8 @@ class Pane(ABC):
 
     @abstractmethod
     def _build_layout(self):
+        pass
+
+    @abstractmethod
+    def _build_callbacks(self):
         pass
