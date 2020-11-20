@@ -1,12 +1,12 @@
 import Data_Handling.SQL as sql
-from Data_Handling.SQL import new_persist_engine
+from Data_Handling.SQLengines import new_persist_engine
 import timeit
 
 test_dash = sql.SqlDataSource(
-    sql_folder_path=r'C:\Users\david.smit\PycharmProjects\NWT_Dash\global_queries',
+    sql_folder_path=r'..\global_queries',
     sql_file_name='generic.sql',
     cache=True,
-    engine=new_persist_engine,
+    # engine=new_persist_engine,
 )
 
 query = test_dash.query.station_data

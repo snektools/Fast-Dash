@@ -25,3 +25,4 @@ def new_persist_engine(query_string: str, connection_string: str):
     """
     serializer = Serializer('jfksjdfisaeiojasfoiajsodifjioejfijefief',)
     return serializer.dumps(query_string)#.decode('utf-8')
+
