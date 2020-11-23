@@ -1,8 +1,8 @@
 import dash
 import dash_html_components as html
 from Data_Handling.SQL import SqlDataSource
-from scratch_dash.pane_scratch import ScratchPane
-from scratch_dash.SQLengines import nwt_engine
+from scratch.pane_scratch import ScratchPane
+from scratch.SQLengines import nwt_engine
 
 app = dash.Dash(__name__)
 

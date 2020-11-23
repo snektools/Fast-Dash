@@ -1,4 +1,2 @@
-pandas
-pyodbc
-dash
+-r requirements.txt
 pytest==5.4.3
