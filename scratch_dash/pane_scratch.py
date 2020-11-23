@@ -1,15 +1,15 @@
 from Layout_Components.Pane import Pane
 from Layout_Components.Visualization.Scatter import Scatter
+import Data_Handling.dates as dates
 import dash_html_components as html
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
-from callbacks.callback import CallbackDefinition
+from Callbacks.callback import CallbackDefinition
 
 class ScratchPane(Pane):
-    def __init__(self, data_source, app, **kwargs):
+    def __init__(self, data_source, **kwargs):
         self._layout = None
         self._data_source = data_source
-        self._app = app
         self._build_visualizations(**kwargs)
         self._build_controls(**kwargs)
         self._build_layout()
@@ -60,7 +60,19 @@ class ScratchPane(Pane):
 
     def _build_callbacks(self):
         def scatter_sort(side, machine):
-            return [self._scatter.update_figure(database='C1_RDM',station=machine,column_displayed=side)]
+            end_date_raw = dates.create_end_date()
+            end_date = dates.datetime_to_str(dates.round_down(end_date_raw))
+            start_date = dates.datetime_to_str(dates.round_down(dates.create_start_date(end_date_raw)))
+            print(start_date, end_date)
+            return [
+                self._scatter.update_figure(
+                    start_date=start_date,
+                    end_date=end_date,
+                    database='C1_RDM',
+                    station=machine,
+                    column_displayed=side
+                )
+            ]
 
         self._callbacks = [
             CallbackDefinition(

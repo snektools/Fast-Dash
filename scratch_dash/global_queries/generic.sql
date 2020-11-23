@@ -3,9 +3,12 @@
     {% if top %}
         {{top}}
     {% else %}
-        10
+        1000
     {% endif %}
     *
     FROM [{{database}}].dbo.[{{station}}]
+    {% if start_date and end_date %}
+        WHERE [TimeStamp] between '{{ start_date }}' and '{{ end_date }}'
+    {% endif %}
     ORDER BY [TimeStamp] DESC
 {% endsql %}

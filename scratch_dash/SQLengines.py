@@ -17,6 +17,7 @@ def nwt_engine(query_string: str, connection_string: str):
         connection.close()
 
 
+
 def new_persist_engine(query_string: str, connection_string: str):
     """
     :param query_string: The raw query string to execute

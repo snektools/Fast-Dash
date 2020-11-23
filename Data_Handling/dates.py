@@ -12,6 +12,30 @@ def create_start_date(
     return end_date - delta
 
 
+def round_down(
+        time: datetime.datetime,
+        increment: str = 'minute',
+) -> datetime.datetime:
+    allowed_values = ['microsecond','second','minute','hour']
+    if not isinstance(increment, str) or increment.lower() not in allowed_values:
+        raise Exception(f"""
+        Value passed ({increment}) for increment was not valid. 
+        Should be a string and one of the following values:
+        {', '.join(allowed_values)}"""
+                        )
+    time_parameters = {}
+    for allowed_value in allowed_values:
+        if allowed_value==increment.lower():
+            break
+        time_parameters.update(
+            {
+                allowed_value:0
+            }
+        )
+    return time.replace(**time_parameters)
+
+
+
 def within(
         time1: datetime.datetime,
         time2: datetime.datetime,
