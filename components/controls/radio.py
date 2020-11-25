@@ -5,7 +5,7 @@ from dash.dependencies import Input, Output, State
 try:
     from components.controls.control import Control
 except:
-    from Fast_Dash.Layout_Components.Controls.control import Control
+    from Fast_Dash.components.controls.control import Control
 
 
 class Radio(Control):
