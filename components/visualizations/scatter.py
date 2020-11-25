@@ -1,9 +1,9 @@
 import plotly.graph_objects as go
 # TODO: Remove this once this goes to PtPi
 try:
-    from components.visualizations.Plot import Plot
+    from components.visualizations.plot import Plot
 except:
-    from Fast_Dash.Layout_Components.Visualization.Plot import Plot
+    from Fast_Dash.components.visualizations.plot import Plot
 
 
 class Scatter(Plot):

@@ -4,9 +4,9 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 
 try:
-    from components.DCC import Dcc
+    from components.core_component import CoreComponent
 except:
-    from Fast_Dash.Layout_Components.DCC import CoreComponent
+    from Fast_Dash.components.core_component import CoreComponent
 
 class Plot(CoreComponent):
     def __init__(self, data_source, colorway=None, **kwargs):
