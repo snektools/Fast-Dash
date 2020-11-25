@@ -3,12 +3,12 @@ import plotly.graph_objs as go
 import dash_core_components as dcc
 
 try:
-    from Layout_Components.DCC import Dcc
+    from components.DCC import Dcc
 except:
-    from Fast_Dash.Layout_Components.DCC import Dcc
+    from Fast_Dash.Layout_Components.DCC import CoreComponent
 
 
-class Control(Dcc):
+class Control(CoreComponent):
     def __init__(self, values: dict = None, default_value=None):
         self._values = values
         self._assign_id()

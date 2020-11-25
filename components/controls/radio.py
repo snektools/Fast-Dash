@@ -3,7 +3,7 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 
 try:
-    from Layout_Components.Controls.control import Control
+    from components.controls.control import Control
 except:
     from Fast_Dash.Layout_Components.Controls.control import Control
 

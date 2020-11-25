@@ -4,11 +4,11 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 
 try:
-    from Layout_Components.DCC import Dcc
+    from components.DCC import Dcc
 except:
-    from Fast_Dash.Layout_Components.DCC import Dcc
+    from Fast_Dash.Layout_Components.DCC import CoreComponent
 
-class Plot(Dcc):
+class Plot(CoreComponent):
     def __init__(self, data_source, colorway=None, **kwargs):
         self._assign_id()
         self._data_source = data_source
@@ -23,6 +23,8 @@ class Plot(Dcc):
     def get_output(self, component_property='figure'):
         return Output(component_id=self._id, component_property=component_property)
 
+    def get_input(self, component_property='select'):
+        return Input(component_id=self._id, component_property=component_property)
 
     def _read_data(self, **kwargs):
         self._data = self._data_source(**kwargs)

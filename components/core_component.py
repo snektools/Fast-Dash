@@ -5,7 +5,7 @@ import secrets
 
 
 
-class Dcc(ABC):
+class CoreComponent(ABC):
 
     ids = []
 
