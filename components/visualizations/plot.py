@@ -2,11 +2,8 @@ from abc import ABC, abstractmethod
 import plotly.graph_objs as go
 import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
+from components.core_component import CoreComponent
 
-try:
-    from components.DCC import Dcc
-except:
-    from Fast_Dash.Layout_Components.DCC import CoreComponent
 
 class Plot(CoreComponent):
     def __init__(self, data_source, colorway=None, **kwargs):
