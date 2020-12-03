@@ -3,28 +3,39 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 
 try:
-    from components.core_component import CoreComponent
+    from components.controls.control import Control
 except:
-    from Fast_Dash.components.core_component import CoreComponent
+    from Fast_Dash.components.controls.control import Control
 
-class DropDown(CoreComponent):
+class DropDown(Control):
     def _update_values(self):
+        if isinstance(self._values, dict):
+            values = self._values
+        else:
+            values = {
+                item:item
+                for item in self._values
+            }
         self._options = [
             {
                 'label': key,
                 'value': value,
             }
-            for key, value in self._values.items()
+            for key, value in values.items()
         ]
 
     def _create_default_value(self):
-        self._value = list(self._values.values())[0]
+        if isinstance(self._values, dict):
+            self._value = list(self._values.values())[0]
+        else:
+            self._value = self._values[0]
 
     def _create_component(self):
         self.dash_component = dcc.Dropdown(
             id=self._id,
             options=self._options,
             value=self._value,
+            multi=True,
         )
 
     def get_output(self, component_property='options'):
