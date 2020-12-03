@@ -7,6 +7,12 @@ class Pane(ABC):
     controls, callbacks and return a built html div.
     """
 
+    def __init__(self, **kwargs):
+        self._build_visualizations(**kwargs)
+        self._build_controls(**kwargs)
+        self._build_layout()
+        self._build_callbacks()
+
     def get_layout(self):
         return self._layout
 
