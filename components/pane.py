@@ -8,7 +8,7 @@ class Pane(ABC):
     """
 
     def __init__(self, data_source, **kwargs):
-        self._date_source = data_source
+        self._data_source = data_source
         self._build_visualizations(**kwargs)
         self._build_controls(**kwargs)
         self._build_layout()

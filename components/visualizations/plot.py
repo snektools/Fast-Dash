@@ -8,8 +8,9 @@ try:
 except:
     from Fast_Dash.components.core_component import CoreComponent
 
+
 class Plot(CoreComponent):
-    def __init__(self, data_source, colorway=None, **kwargs):
+    def __init__(self, data_source, colorway=None, style=None, **kwargs):
         self._assign_id()
         self._data_source = data_source
         self._colorway = colorway or ['#581845', '#900C3F', '#C70039', '#FF5733', '#FFC300', '#DAF7A6']
@@ -19,6 +20,7 @@ class Plot(CoreComponent):
         self._data = None
         self.dash_component = None
         self._build_dash_component(**kwargs)
+        self._style = style
 
     def get_output(self, component_property='figure'):
         return Output(component_id=self._id, component_property=component_property)
@@ -29,7 +31,6 @@ class Plot(CoreComponent):
     def _read_data(self, **kwargs):
         self._data = self._data_source(**kwargs)
 
-    @abstractmethod
     def _post_process_data(self, **kwargs):
         pass
 
@@ -53,5 +54,5 @@ class Plot(CoreComponent):
 
     def _build_dash_component(self, **kwargs):
         self.update_component(**kwargs)
-        self.dash_component = dcc.Graph(id=self._id, figure=self._figure)
+        self.dash_component = dcc.Graph(id=self._id, figure=self._figure, style=self._style)
 
