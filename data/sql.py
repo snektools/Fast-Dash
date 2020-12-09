@@ -26,7 +26,7 @@ class SqlDataSource:
             sql_folder_path,
             sql_file_name,
             engine,
-            cache=False,
+            cache=None,
     ):
         self._sql_folder_path = pathlib.Path(sql_folder_path)
         self._sql_file_name = sql_file_name
@@ -35,9 +35,15 @@ class SqlDataSource:
         self._build_queries()
 
     def _build_queries(self):
-        query_factory = factory.JinJAQL(
-            folder_path=self._sql_folder_path,
-            engine=self._engine,
-            cache=self._cache,
-        )
+        if self._cache:
+            query_factory = factory.JinJAQL(
+                folder_path=self._sql_folder_path,
+                engine=self._engine,
+                cache=self._cache,
+            )
+        else:
+            query_factory = factory.JinJAQL(
+                folder_path=self._sql_folder_path,
+                engine=self._engine,
+            )
         self.query = query_factory.load_queries(self._sql_file_name)
