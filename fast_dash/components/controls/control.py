@@ -1,9 +1,7 @@
-from abc import ABC, abstractmethod
-import plotly.graph_objs as go
-import dash_core_components as dcc
+from abc import abstractmethod
 
 try:
-    from components.core_component import CoreComponent
+    from fast_dash.components import CoreComponent
 except:
     from Fast_Dash.components.core_component import CoreComponent
 

@@ -1,9 +1,8 @@
-import dash_html_components as html
 import dash_core_components as dcc
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 
 try:
-    from components.controls.control import Control
+    from fast_dash.components.controls.control import Control
 except:
     from Fast_Dash.components.controls.control import Control
 
