@@ -6,6 +6,7 @@ try:
 except:
     from Fast_Dash.components.controls.control import Control
 
+
 class DropDown(Control):
     def _update_values(self):
         if isinstance(self._values, dict):
