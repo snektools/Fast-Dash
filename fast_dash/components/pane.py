@@ -9,6 +9,8 @@ class Pane(ABC):
 
     def __init__(self, data_source, **kwargs):
         self._data_source = data_source
+        self._layout = []
+        self._callbacks = []
         self._build_visualizations(**kwargs)
         self._build_controls(**kwargs)
         self._build_layout()
