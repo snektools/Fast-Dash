@@ -10,31 +10,18 @@ except:
 
 
 class Plot(CoreComponent):
-    def __init__(
-            self,
-            data_source,
-            x: str or list = None,
-            y: str or list = None,
-            x_agg: str = None,
-            y_agg: str = None,
-            colorway=None,
-            style=None,
-            **kwargs
-    ):
-        self._x = x
-        self._y = y
-        self._x_agg = x_agg
-        self._y_agg = y_agg
+    def __init__(self, data_source, post_process_func=None, colorway=None, style=None, **kwargs):
         self._assign_id()
         self._data_source = data_source
+        self._post_process_func = post_process_func
         self._colorway = colorway or ['#581845', '#900C3F', '#C70039', '#FF5733', '#FFC300', '#DAF7A6']
+        self._style = style
         self._go_data = None
         self._go_layout = None
         self._figure = None
         self._data = None
         self.dash_component = None
         self._build_dash_component(**kwargs)
-        self._style = style
 
     def get_output(self, component_property='figure'):
         return Output(component_id=self._id, component_property=component_property)
@@ -46,7 +33,8 @@ class Plot(CoreComponent):
         self._data = self._data_source(**kwargs)
 
     def _post_process_data(self, **kwargs):
-        pass
+        if self._post_process_func:
+            self._data = self._post_process_func(self._data)
 
     @abstractmethod
     def _build_plot_data(self, **kwargs):
@@ -69,7 +57,3 @@ class Plot(CoreComponent):
     def _build_dash_component(self, **kwargs):
         self.update_component(**kwargs)
         self.dash_component = dcc.Graph(id=self._id, figure=self._figure, style=self._style)
-
-class PlotBuilder:
-    @classmethod
-    def build(cls, plot,):
