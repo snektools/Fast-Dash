@@ -10,7 +10,21 @@ except:
 
 
 class Plot(CoreComponent):
-    def __init__(self, data_source, colorway=None, style=None, **kwargs):
+    def __init__(
+            self,
+            data_source,
+            x: str or list = None,
+            y: str or list = None,
+            x_agg: str = None,
+            y_agg: str = None,
+            colorway=None,
+            style=None,
+            **kwargs
+    ):
+        self._x = x
+        self._y = y
+        self._x_agg = x_agg
+        self._y_agg = y_agg
         self._assign_id()
         self._data_source = data_source
         self._colorway = colorway or ['#581845', '#900C3F', '#C70039', '#FF5733', '#FFC300', '#DAF7A6']
@@ -56,3 +70,6 @@ class Plot(CoreComponent):
         self.update_component(**kwargs)
         self.dash_component = dcc.Graph(id=self._id, figure=self._figure, style=self._style)
 
+class PlotBuilder:
+    @classmethod
+    def build(cls, plot,):
