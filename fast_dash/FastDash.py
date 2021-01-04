@@ -5,6 +5,7 @@ import dash_html_components as html
 class FastDash(Dash):
     def __int__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self._panes = []
 
     def add_pane(self, pane):
         self._new_pane(pane)
