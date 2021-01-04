@@ -3,7 +3,7 @@ import dash_html_components as html
 
 
 class FastDash(Dash):
-    def __int__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._panes = []
 
@@ -14,8 +14,6 @@ class FastDash(Dash):
         pass
 
     def _new_pane(self, pane):
-        if not hasattr(self, '_panes'):
-            self._panes = []
         self._panes.append(pane)
         self._update_layout()
         self._register_callbacks(pane)
