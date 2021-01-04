@@ -7,7 +7,15 @@ from fast_dash.components import CoreComponent
 
 
 class Plot(CoreComponent):
-    def __init__(self, data_source, post_process_func=None, colorway=None, style=None, **kwargs):
+    def __init__(
+            self,
+            data_source,
+            post_process_func=None,
+            colorway=None,
+            style=None,
+            static_data_args=None,
+            **kwargs
+    ):
         self._assign_id()
         self._data_source = data_source
         self._post_process_func = post_process_func
@@ -18,6 +26,7 @@ class Plot(CoreComponent):
         self._figure = None
         self._data = None
         self.dash_component = None
+        self._static_data_args = static_data_args or dict()
         self._build_dash_component(**kwargs)
 
     def get_output(self, component_property='figure'):
@@ -27,6 +36,7 @@ class Plot(CoreComponent):
         return Input(component_id=self._id, component_property=component_property)
 
     def _read_data(self, **kwargs):
+        kwargs.update(self._static_data_args)
         self._data = self._data_source(**kwargs)
 
     def _post_process_data(self, **kwargs):
