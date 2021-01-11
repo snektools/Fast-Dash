@@ -1,26 +1,35 @@
 from abc import abstractmethod
 
-try:
-    from fast_dash.components import CoreComponent
-except:
-    from Fast_Dash.components.core_component import CoreComponent
+from fast_dash.components import CoreComponent
+
 
 
 class Control(CoreComponent):
-    def __init__(self, values: dict = None, default_value=None):
+    def __init__(self, values: dict = None, default_value=None,):
         self._values = values
         self._assign_id()
         self._update_values()
         self._value = default_value or self._create_default_value()
         self._create_component()
 
-    @abstractmethod
     def _update_values(self):
-        pass
+        if isinstance(self._values, dict):
+            values = self._values
+        else:
+            values = {
+                item: item
+                for item in self._values
+            }
+        self._options = [
+            {
+                'label': key,
+                'value': value,
+            }
+            for key, value in values.items()
+        ]
 
-    @abstractmethod
     def _create_default_value(self):
-        pass
+        self._value = self._options[0]['value']
 
     @abstractmethod
     def _create_component(self):

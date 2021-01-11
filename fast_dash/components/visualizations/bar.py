@@ -25,4 +25,3 @@ class Bar(Plot):
         )
         self._go_data = figure._data
 
-    def

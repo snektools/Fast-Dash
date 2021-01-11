@@ -26,8 +26,29 @@ class Plot(CoreComponent):
         self._figure = None
         self._data = None
         self.dash_component = None
+        self._processed_data = None
         self._static_data_args = static_data_args or dict()
+        self._set_default_columns()
         self._build_dash_component(**kwargs)
+
+    def _set_default_columns(self):
+        pass
+
+    def _get_arguments(self, **kwargs):
+        pass
+
+    def _check_args(self, arg_name, default, falsey_invalid=True, **kwargs):
+        if arg_name in kwargs:
+            value = kwargs[arg_name]
+        elif arg_name in self._static_data_args:
+            value = self._static_data_args[arg_name]
+        else:
+            return default
+
+        if falsey_invalid and value == False:
+            return default
+        else:
+            return value
 
     def get_output(self, component_property='figure'):
         return Output(component_id=self._id, component_property=component_property)
@@ -37,11 +58,24 @@ class Plot(CoreComponent):
 
     def _read_data(self, **kwargs):
         kwargs.update(self._static_data_args)
+        kwargs = {
+            key:value
+            for key, value in kwargs.items()
+            if key[:1] != '_'
+        }
         self._data = self._data_source(**kwargs)
 
-    def _post_process_data(self, **kwargs):
+    def _post_process_data_user_func(self, **kwargs):
         if self._post_process_func:
-            self._data = self._post_process_func(self._data)
+            self._processed_data = self._post_process_func(self._data, **kwargs)
+        else:
+            self._processed_data = self._data
+
+    def _post_process_data(self, **kwargs):
+        pass
+
+    def _aggregate_data(self, **kwargs):
+        pass
 
     @abstractmethod
     def _build_plot_data(self, **kwargs):
@@ -55,7 +89,11 @@ class Plot(CoreComponent):
 
     def update_component(self, **kwargs):
         self._read_data(**kwargs)
+        self._get_arguments(**kwargs)
+        self._post_process_data_user_func(**kwargs)
         self._post_process_data(**kwargs)
+        # TODO: Can all parameters be pulled out so you don't have to pass kwargs?
+        self._aggregate_data()
         self._build_plot_data(**kwargs)
         self._build_layout(**kwargs)
         self._build_figure(**kwargs)

@@ -1,24 +1,9 @@
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 
-try:
-    from fast_dash.components.controls.control import Control
-except:
-    from Fast_Dash.components.controls.control import Control
-
+from fast_dash.components.controls.control import Control
 
 class Radio(Control):
-    def _update_values(self):
-        self._options = [
-            {
-                'label': key,
-                'value': value,
-            }
-            for key, value in self._values.items()
-        ]
-
-    def _create_default_value(self):
-        self._value = list(self._values.values())[0]
 
     def _create_component(self):
         self.dash_component = dcc.RadioItems(
@@ -28,8 +13,8 @@ class Radio(Control):
         )
 
     def get_output(self, component_property='options'):
-        return Output(component_id=self._id, component_property=component_property)
+        return [Output(component_id=self._id, component_property=component_property)]
 
     def get_input(self, component_property='value'):
-        return Input(component_id=self._id, component_property=component_property)
+        return [Input(component_id=self._id, component_property=component_property)]
 
