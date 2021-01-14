@@ -45,16 +45,16 @@ class Plot(CoreComponent):
         else:
             return default
 
-        if falsey_invalid and value == False:
+        if falsey_invalid and not value:
             return default
         else:
             return value
 
     def get_output(self, component_property='figure'):
-        return Output(component_id=self._id, component_property=component_property)
+        return [Output(component_id=self._id, component_property=component_property)]
 
     def get_input(self, component_property='select'):
-        return Input(component_id=self._id, component_property=component_property)
+        return [Input(component_id=self._id, component_property=component_property)]
 
     def _read_data(self, **kwargs):
         kwargs.update(self._static_data_args)
@@ -102,3 +102,6 @@ class Plot(CoreComponent):
     def _build_dash_component(self, **kwargs):
         self.update_component(**kwargs)
         self.dash_component = dcc.Graph(id=self._id, figure=self._figure, style=self._style)
+
+    def get_raw_data(self):
+        return self._data.copy(deep=True)

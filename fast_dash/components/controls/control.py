@@ -29,7 +29,7 @@ class Control(CoreComponent):
         ]
 
     def _create_default_value(self):
-        self._value = self._options[0]['value']
+        return self._options[0]['value']
 
     @abstractmethod
     def _create_component(self):
