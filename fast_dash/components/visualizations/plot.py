@@ -3,6 +3,8 @@ import plotly.graph_objs as go
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
 
+import pandas as pd
+
 from fast_dash.components import CoreComponent
 
 
@@ -26,7 +28,9 @@ class Plot(CoreComponent):
         self._figure = None
         self._data = None
         self.dash_component = None
-        self._processed_data = None
+        self._processed_data = pd.DataFrame()
+        self._aggregated_data = pd.DataFrame()
+        self._output_data = None
         self._static_data_args = static_data_args or dict()
         self._set_default_columns()
         self._build_dash_component(**kwargs)
@@ -77,6 +81,14 @@ class Plot(CoreComponent):
     def _aggregate_data(self, **kwargs):
         pass
 
+    def _set_data_to_output(self):
+        if len(self._aggregated_data) > 0:
+            self._output_data = self._aggregated_data
+            return
+        else:
+            self._output_data = self._processed_data
+            return
+
     @abstractmethod
     def _build_plot_data(self, **kwargs):
         pass
@@ -94,6 +106,7 @@ class Plot(CoreComponent):
         self._post_process_data(**kwargs)
         # TODO: Can all parameters be pulled out so you don't have to pass kwargs?
         self._aggregate_data()
+        self._set_data_to_output()
         self._build_plot_data(**kwargs)
         self._build_layout(**kwargs)
         self._build_figure(**kwargs)
@@ -105,3 +118,6 @@ class Plot(CoreComponent):
 
     def get_raw_data(self):
         return self._data.copy(deep=True)
+
+    def get_processed_data(self):
+        return self._processed_data.copy(deep=True)
