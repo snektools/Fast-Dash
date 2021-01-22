@@ -1,1 +1,1 @@
-from .sql import SqlDataSource
+from .sql import SqlSource
