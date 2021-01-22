@@ -2,11 +2,13 @@ from dash import Dash
 import dash_html_components as html
 import dash_core_components as dcc
 
+
 class FastDash(Dash):
-    _default_tab_name = 'default'
+    _default_tab_name = 'Home'
+
     def __init__(self, has_tabs=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._tabs = {self._default_tab_name :[]}
+        self._tabs = {self._default_tab_name: []}
 
     def add_pane(self, pane, tab_name=None):
         self._new_pane(pane, tab_name=tab_name)
@@ -33,11 +35,11 @@ class FastDash(Dash):
         else:
             self._build_layout_single_page()
 
-
     def _is_multi_tab(self):
         return len(self._tabs) > 1
 
     def _build_layout_tabbed(self):
+
         self._layout = html.Div(
             [
                 dcc.Tabs(
@@ -47,6 +49,7 @@ class FastDash(Dash):
                             children=self._build_page(tab_name=name)
                         )
                         for name, panes in self._tabs.items()
+                        if panes
                     ]
                 )
             ]
