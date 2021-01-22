@@ -2,7 +2,7 @@ from jinjaql import factory
 import pathlib
 
 
-class SqlDataSource:
+class SqlSource:
 
     def __init__(
             self,
