@@ -58,6 +58,9 @@ class Plot(CoreComponent):
             argument: self.__getattribute__(argument)
             for argument in new_arguments
         }
+        self._user_arguments.update(
+            self._static_data_args
+        )
 
     def _set_arguments(self, **kwargs):
         for argument, default_value in self._user_arguments.items():
@@ -66,8 +69,9 @@ class Plot(CoreComponent):
     def _set_argument(self, arg_name, default, falsey_invalid=True, **kwargs):
         if arg_name in kwargs:
             value = kwargs[arg_name]
-        elif arg_name in self._static_data_args:
-            value = self._static_data_args[arg_name]
+        # TODO Test if this is necesary and delete
+        # elif arg_name in self._static_data_args:
+        #     value = self._static_data_args[arg_name]
         else:
             value = default
 
