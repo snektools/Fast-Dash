@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-def default_function(data):
+def default_function(data, **kwargs):
     return data
 
 
@@ -17,7 +17,7 @@ class DefaultHandler(Handler):
             data_source: callable,
             post_processing_function: callable = default_function,
             aggregating_function: callable = default_function,
-            static_data_arguments = None
+            static_data_arguments=None
     ):
         self._static_data_arguments = static_data_arguments or dict()
         self._data_source = data_source
@@ -32,9 +32,9 @@ class DefaultHandler(Handler):
         if callable(post_processing_function):
             self._post_processing_function = post_processing_function
         elif isinstance(post_processing_function, (list, tuple, set)):
-            def post_processing_functions(data):
+            def post_processing_functions(data, **kwargs):
                 for function in post_processing_function:
-                    data = function(data)
+                    data = function(data, **kwargs)
                 return data
             self._post_processing_function = post_processing_functions
         else:
@@ -43,9 +43,8 @@ class DefaultHandler(Handler):
     def __call__(self, *args, **kwargs):
         kwargs = self._prepare_arguments(**kwargs)
         self._queried_data = self._data_source(**kwargs)
-        self._processed_data = self._queried_data
-        self._processed_data = self._post_processing_function(self._queried_data)
-        self._final_data = self._aggregating_function(self._processed_data)
+        self._processed_data = self._post_processing_function(self._queried_data, **kwargs)
+        self._final_data = self._aggregating_function(self._processed_data, **kwargs)
 
     def _prepare_arguments(self, kwargs):
         kwargs.update(self._static_data_arguments)
