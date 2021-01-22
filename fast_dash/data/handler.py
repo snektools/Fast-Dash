@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 
 
 def default_function(data, **kwargs):
@@ -14,9 +15,9 @@ class Handler(ABC):
 class DefaultHandler(Handler):
     def __init__(
             self,
-            data_source: callable,
-            post_processing_function: callable = default_function,
-            aggregating_function: callable = None,
+            data_source: Callable,
+            post_processing_function: Callable = default_function,
+            aggregating_function: Callable = None,
             static_data_arguments=None
     ):
         self._static_data_arguments = static_data_arguments or dict()
@@ -76,9 +77,9 @@ class DataHandlers:
     def create_handler(
             self,
             name,
-            data_source: callable,
-            post_processing_function: callable = None,
-            aggregating_function: callable = None,
+            data_source: Callable,
+            post_processing_function: Callable = None,
+            aggregating_function: Callable = None,
             handler_obj: Handler = DefaultHandler,
     ):
         self.__setattr__(
