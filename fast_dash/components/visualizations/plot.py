@@ -32,27 +32,49 @@ class Plot(CoreComponent):
         self._aggregated_data = pd.DataFrame()
         self._output_data = None
         self._static_data_args = static_data_args or dict()
-        self._set_default_columns()
+        self._user_arguments = {}
+        self._retrieve_current_attributes()
+        self._set_default_arguments()
+        self._record_default_arguments()
         self._build_dash_component(**kwargs)
 
-    def _set_default_columns(self):
+    def _retrieve_current_attributes(self):
+        self._user_arguments = {
+            attribute: None
+            for attribute in dir(self)
+            if not callable(getattr(self, attribute))
+        }
+
+    def _set_default_arguments(self):
         pass
 
-    def _get_arguments(self, **kwargs):
-        pass
+    def _record_default_arguments(self):
+        new_arguments = {
+            attribute
+            for attribute in dir(self)
+            if not callable(self.__getattribute__(attribute))
+        } - set(self._user_arguments.keys())
+        self._user_arguments = {
+            argument: self.__getattribute__(argument)
+            for argument in new_arguments
+        }
 
-    def _check_args(self, arg_name, default, falsey_invalid=True, **kwargs):
+    def _set_arguments(self, **kwargs):
+        for argument, default_value in self._user_arguments.items():
+            self._set_argument(argument, default_value, **kwargs)
+
+    def _set_argument(self, arg_name, default, falsey_invalid=True, **kwargs):
         if arg_name in kwargs:
             value = kwargs[arg_name]
         elif arg_name in self._static_data_args:
             value = self._static_data_args[arg_name]
         else:
-            return default
+            value = default
 
         if falsey_invalid and not value:
-            return default
-        else:
-            return value
+            value = default
+
+        self.__setattr__(arg_name, value)
 
     def get_output(self, component_property='figure'):
         return [Output(component_id=self._id, component_property=component_property)]
@@ -101,7 +123,7 @@ class Plot(CoreComponent):
 
     def update_component(self, **kwargs):
         self._read_data(**kwargs)
-        self._get_arguments(**kwargs)
+        self._set_arguments(**kwargs)
         self._post_process_data_user_func(**kwargs)
         self._post_process_data(**kwargs)
         # TODO: Can all parameters be pulled out so you don't have to pass kwargs?
