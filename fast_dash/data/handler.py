@@ -45,6 +45,7 @@ class DefaultHandler(Handler):
         self._queried_data = self._data_source(**kwargs)
         self._processed_data = self._post_processing_function(self._queried_data, **kwargs)
         self._final_data = self._aggregating_function(self._processed_data, **kwargs)
+        return self._final_data
 
     def _prepare_arguments(self, kwargs):
         kwargs.update(self._static_data_arguments)
