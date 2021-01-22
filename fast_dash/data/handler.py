@@ -49,13 +49,14 @@ class DataHandlers:
 
     def create_handler(
             self,
+            name,
             data_source: callable,
             post_processing_function: callable = None,
             aggregating_fuction: callable =None,
             HandlerObj: Handler = DefaultHandler
     ):
         self.__setattr__(
-            'name',
+            name,
             HandlerObj(
                 data_source=data_source,
                 post_processing_function=post_processing_function,
