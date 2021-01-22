@@ -56,6 +56,17 @@ class DefaultHandler(Handler):
         }
         return kwargs
 
+    @property
+    def queried_data(self):
+        return self._queried_data
+
+    @property
+    def processed_data(self):
+        return self._processed_data
+
+    @property
+    def data(self):
+        return self._final_data
 
 class DataHandlers:
     def __init__(self):
