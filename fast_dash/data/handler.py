@@ -16,7 +16,7 @@ class DefaultHandler(Handler):
             self,
             data_source: callable,
             post_processing_function: callable = default_function,
-            aggregating_function: callable = default_function,
+            aggregating_function: callable = None,
             static_data_arguments=None
     ):
         self._static_data_arguments = static_data_arguments or dict()
@@ -25,7 +25,7 @@ class DefaultHandler(Handler):
         self._post_processing_function = None
         self._create_post_process_function(post_processing_function)
         self._processed_data = None
-        self._aggregating_function = aggregating_function
+        self._aggregating_function = aggregating_function or default_function
         self._final_data = None
 
     def _create_post_process_function(self, post_processing_function):
@@ -47,7 +47,7 @@ class DefaultHandler(Handler):
         self._final_data = self._aggregating_function(self._processed_data, **kwargs)
         return self._final_data
 
-    def _prepare_arguments(self, kwargs):
+    def _prepare_arguments(self, **kwargs):
         kwargs.update(self._static_data_arguments)
         kwargs = {
             key: value
@@ -68,6 +68,7 @@ class DefaultHandler(Handler):
     def data(self):
         return self._final_data
 
+
 class DataHandlers:
     def __init__(self):
         pass
@@ -77,7 +78,7 @@ class DataHandlers:
             name,
             data_source: callable,
             post_processing_function: callable = None,
-            aggregating_fuction: callable =None,
+            aggregating_function: callable = None,
             handler_obj: Handler = DefaultHandler,
     ):
         self.__setattr__(
@@ -85,6 +86,6 @@ class DataHandlers:
             handler_obj(
                 data_source=data_source,
                 post_processing_function=post_processing_function,
-                aggregating_function=aggregating_fuction,
+                aggregating_function=aggregating_function,
             )
         )

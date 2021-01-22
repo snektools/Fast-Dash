@@ -2,9 +2,6 @@ from abc import abstractmethod
 import plotly.graph_objs as go
 import dash_core_components as dcc
 from dash.dependencies import Input, Output
-
-import pandas as pd
-
 from fast_dash.components import CoreComponent
 
 
@@ -12,7 +9,6 @@ class Plot(CoreComponent):
     def __init__(
             self,
             data_source,
-            post_process_func=None,
             colorway=None,
             style=None,
             static_data_args=None,
@@ -27,7 +23,7 @@ class Plot(CoreComponent):
         self._figure = None
         self._data = None
         self.dash_component = None
-
+        self._static_data_args = static_data_args or {}
         self._user_arguments = {}
         self._retrieve_current_attributes()
         self._set_default_arguments()
@@ -79,7 +75,6 @@ class Plot(CoreComponent):
     def get_input(self, component_property='select'):
         return [Input(component_id=self._id, component_property=component_property)]
 
-
     @abstractmethod
     def _build_plot_data(self, **kwargs):
         pass
@@ -87,7 +82,7 @@ class Plot(CoreComponent):
     def _build_layout(self, **kwargs):
         self._go_layout = go.Layout()
 
-    def _build_figure(self, **kwargs):
+    def _build_figure(self):
         self._figure = {'data': self._go_data, 'layout': self._go_layout}
 
     def update_component(self, **kwargs):
@@ -95,7 +90,7 @@ class Plot(CoreComponent):
         self._set_arguments(**kwargs)
         self._build_plot_data(**kwargs)
         self._build_layout(**kwargs)
-        self._build_figure(**kwargs)
+        self._build_figure()
         return self._figure
 
     def _build_dash_component(self, **kwargs):
