@@ -66,11 +66,11 @@ class DataHandlers:
             data_source: callable,
             post_processing_function: callable = None,
             aggregating_fuction: callable =None,
-            HandlerObj: Handler = DefaultHandler
+            handler_obj: Handler = DefaultHandler,
     ):
         self.__setattr__(
             name,
-            HandlerObj(
+            handler_obj(
                 data_source=data_source,
                 post_processing_function=post_processing_function,
                 aggregating_function=aggregating_fuction,
