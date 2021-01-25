@@ -18,7 +18,7 @@ class DefaultHandler(Handler):
             data_source: Callable,
             post_processing_function: Callable = default_function,
             aggregating_function: Callable = None,
-            static_data_arguments=None
+            static_data_arguments: dict = None,
     ):
         self._static_data_arguments = static_data_arguments or dict()
         self._data_source = data_source
@@ -76,10 +76,11 @@ class DataHandlers:
 
     def create_handler(
             self,
-            name,
+            name: str,
             data_source: Callable,
             post_processing_function: Callable = None,
             aggregating_function: Callable = None,
+            static_data_arguments: dict = None,
             handler_obj: Handler = DefaultHandler,
     ):
         self.__setattr__(
@@ -88,5 +89,6 @@ class DataHandlers:
                 data_source=data_source,
                 post_processing_function=post_processing_function,
                 aggregating_function=aggregating_function,
+                static_data_arguments=static_data_arguments,
             )
         )
