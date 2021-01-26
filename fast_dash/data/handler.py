@@ -22,14 +22,14 @@ class DefaultHandler(Handler):
     def __init__(
             self,
             data_source: Callable,
-            pre_processing_function: Callable = default_function_preprocessing,
-            post_processing_function: Callable = default_function,
+            pre_processing_function: Callable = None,
+            post_processing_function: Callable = None,
             aggregating_function: Callable = None,
             static_data_arguments: Dict = None,
     ):
         self._static_data_arguments = static_data_arguments or dict()
         self._data_source = data_source
-        self._pre_processing_function = pre_processing_function
+        self._pre_processing_function = pre_processing_function or default_function_preprocessing
         self._queried_data = None
         self._post_processing_function = None
         self._create_post_process_function(post_processing_function)
@@ -47,7 +47,7 @@ class DefaultHandler(Handler):
                 return data
             self._post_processing_function = post_processing_functions
         else:
-            raise('A function or colleciton of functions needs to be passed for post_processing_function')
+            self._post_processing_function = default_function
 
     def __call__(self, input_data: pd.DataFrame = None, *args, **kwargs):
         if not isinstance(input_data, pd.DataFrame):
@@ -90,6 +90,7 @@ class DataHandlers:
             self,
             name: str,
             data_source: Callable,
+            pre_processing_fucntion: Callable = None,
             post_processing_function: Callable = None,
             aggregating_function: Callable = None,
             static_data_arguments: Dict = None,
@@ -134,13 +135,13 @@ class DataHandlers:
             left_handler: Handler,
             right_handler: Handler,
             how: str = 'inner',
-            on: Optional[List[str], str] = None,
-            left_on: Optional[List[str], str]=None,
-            right_on: Optional[List[str], str] = None,
+            on = None,
+            left_on=None,
+            right_on= None,
             left_index: bool = False,
             right_index: bool = False,
             sort: bool = False,
-            suffixes: Tuple[str] =('_x','_y'),
+            suffixes: Tuple[str] = ('_x', '_y'),
             copy: bool = True,
             indicator: bool = False,
             validate: str = None,
@@ -154,6 +155,7 @@ class DataHandlers:
             data = left_data.merge(
                 right_data,
                 how=how,
+                on=on,
                 left_on=left_on,
                 right_on=right_on,
                 left_index=left_index,
