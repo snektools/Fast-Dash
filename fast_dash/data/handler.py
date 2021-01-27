@@ -29,25 +29,25 @@ class DefaultHandler(Handler):
     ):
         self._static_data_arguments = static_data_arguments or dict()
         self._data_source = data_source
-        self._pre_processing_function = pre_processing_function or default_function_preprocessing
+        self._pre_processing_function = self._create_function(pre_processing_function, default_function_preprocessing)
         self._queried_data = None
-        self._post_processing_function = None
-        self._create_post_process_function(post_processing_function)
+        self._post_processing_function = self._create_function(post_processing_function, default_function)
         self._processed_data = None
-        self._aggregating_function = aggregating_function or default_function
+        self._aggregating_function = self._create_function(aggregating_function, default_function)
         self._final_data = None
 
-    def _create_post_process_function(self, post_processing_function):
-        if callable(post_processing_function):
-            self._post_processing_function = post_processing_function
-        elif isinstance(post_processing_function, (list, tuple, set)):
-            def post_processing_functions(data, **kwargs):
-                for function in post_processing_function:
+    @staticmethod
+    def _create_function(passed_func: Callable, default_func: Callable = default_function):
+        if callable(passed_func):
+            return passed_func
+        elif isinstance(passed_func, (list, tuple, set)):
+            def func(data, **kwargs):
+                for function in passed_func:
                     data = function(data, **kwargs)
                 return data
-            self._post_processing_function = post_processing_functions
+            return func
         else:
-            self._post_processing_function = default_function
+            return default_func
 
     def __call__(self, input_data: pd.DataFrame = None, *args, **kwargs):
         if not isinstance(input_data, pd.DataFrame):
