@@ -54,9 +54,15 @@ class Plot(CoreComponent):
             self._static_data_args
         )
 
-    def _set_arguments(self, **kwargs):
+    def _set_arguments(self, **kwargs)->dict:
         for argument, default_value in self._user_arguments.items():
             self._set_argument(argument, default_value, **kwargs)
+            kwargs.update(
+                {
+                    argument: self.__getattribute__(argument),
+                }
+            )
+        return kwargs
 
     def _set_argument(self, arg_name, default, falsey_invalid=True, **kwargs):
         if arg_name in kwargs:
@@ -86,8 +92,8 @@ class Plot(CoreComponent):
         self._figure = {'data': self._go_data, 'layout': self._go_layout}
 
     def update_component(self, **kwargs):
+        kwargs = self._set_arguments(**kwargs)
         self._data = self._data_source(**kwargs)
-        self._set_arguments(**kwargs)
         self._build_plot_data(**kwargs)
         self._build_layout(**kwargs)
         self._build_figure()
