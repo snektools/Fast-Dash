@@ -90,7 +90,7 @@ class DataHandlers:
             self,
             name: str,
             data_source: Callable,
-            pre_processing_fucntion: Callable = None,
+            pre_processing_function: Callable = None,
             post_processing_function: Callable = None,
             aggregating_function: Callable = None,
             static_data_arguments: Dict = None,
@@ -100,6 +100,7 @@ class DataHandlers:
             name,
             handler_obj(
                 data_source=data_source,
+                pre_processing_function=pre_processing_function,
                 post_processing_function=post_processing_function,
                 aggregating_function=aggregating_function,
                 static_data_arguments=static_data_arguments,
@@ -117,7 +118,7 @@ class DataHandlers:
                 input_data = pd.DataFrame()
             data = input_data.copy(deep=True)
             for handler in handlers:
-                new_handler_data = handler(input_data=input_data, *args, **kwargs)
+                new_handler_data = handler(input_data=data, *args, **kwargs)
                 if concat:
                     data = pd.concat([data, new_handler_data])
                 else:
