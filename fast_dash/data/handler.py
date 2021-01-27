@@ -54,8 +54,8 @@ class DefaultHandler(Handler):
             input_data = pd.DataFrame()
         input_data = input_data.copy(deep=True)
         input_data, args, kwargs = self._pre_processing_function(input_data, *args, **kwargs)
-        kwargs = self._prepare_arguments(**kwargs)
-        self._queried_data = self._data_source(**kwargs)
+        query_kwargs = self._prepare_arguments(**kwargs)
+        self._queried_data = self._data_source(**query_kwargs)
         self._processed_data = self._post_processing_function(self._queried_data, **kwargs)
         self._final_data = self._aggregating_function(self._processed_data, **kwargs)
         return self._final_data
