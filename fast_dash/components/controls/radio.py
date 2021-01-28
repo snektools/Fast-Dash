@@ -3,13 +3,23 @@ from dash.dependencies import Input, Output
 
 from fast_dash.components.controls.control import Control
 
+
 class Radio(Control):
+    def __init__(
+            self,
+            values: list[str] = None,
+            default_value: str = None,
+            label_style: dict = None,
+    ):
+        self._label_style = label_style
+        super().__init__(values=values, default_value=default_value)
 
     def _create_component(self):
         self.dash_component = dcc.RadioItems(
             id=self._id,
             options=self._options,
             value=self._value,
+            labelStyle=self._label_style
         )
 
     def get_output(self, component_property='options'):
