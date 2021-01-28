@@ -41,11 +41,15 @@ class Plot(CoreComponent):
         pass
 
     def _record_default_arguments(self):
-        new_arguments = {
+        current_arguments = {
             attribute
             for attribute in dir(self)
             if not callable(self.__getattribute__(attribute))
-        } - set(self._user_arguments.keys())
+        }
+        previous_arguments = set(self._user_arguments.keys())
+
+        new_arguments = current_arguments - previous_arguments
+
         self._user_arguments = {
             argument: self.__getattribute__(argument)
             for argument in new_arguments
@@ -54,7 +58,7 @@ class Plot(CoreComponent):
             self._static_data_args
         )
 
-    def _set_arguments(self, **kwargs)->dict:
+    def _set_arguments(self, **kwargs) -> dict:
         for argument, default_value in self._user_arguments.items():
             self._set_argument(argument, default_value, **kwargs)
             kwargs.update(
