@@ -3,13 +3,15 @@ from dash.dependencies import Input, Output
 
 from fast_dash.components.controls.control import Control
 
+from typing import List, Dict
+
 
 class Radio(Control):
     def __init__(
             self,
-            values: list[str] = None,
+            values: List[str] = None,
             default_value: str = None,
-            label_style: dict = None,
+            label_style: Dict = None,
     ):
         self._label_style = label_style
         super().__init__(values=values, default_value=default_value)
