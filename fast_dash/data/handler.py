@@ -55,7 +55,10 @@ class DefaultHandler(Handler):
         input_data = input_data.copy(deep=True)
         input_data, args, kwargs = self._pre_processing_function(input_data, *args, **kwargs)
         query_kwargs = self._prepare_arguments(**kwargs)
-        self._queried_data = self._data_source(**query_kwargs)
+        if self._data_source:
+            self._queried_data = self._data_source(**query_kwargs)
+        else:
+            self._queried_data = input_data
         self._processed_data = self._post_processing_function(self._queried_data, **kwargs)
         self._final_data = self._aggregating_function(self._processed_data, **kwargs)
         return self._final_data
@@ -89,7 +92,7 @@ class DataHandlers:
     def create_handler(
             self,
             name: str,
-            data_source: Callable,
+            data_source: Callable = None,
             pre_processing_function: Callable = None,
             post_processing_function: Callable = None,
             aggregating_function: Callable = None,
