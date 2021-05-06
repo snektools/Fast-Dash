@@ -106,3 +106,18 @@ class Plot(CoreComponent):
     def _build_dash_component(self, **kwargs):
         self.update_component(**kwargs)
         self.dash_component = dcc.Graph(id=self._id, figure=self._figure, style=self._style)
+
+
+def daves_function(
+        arg1: str,
+        arg2:int,
+        arg3: float=0
+) -> bool:
+    """
+
+    :param arg1:
+    :param arg2:
+    :param arg3:
+    :return:
+    """
+    return True
