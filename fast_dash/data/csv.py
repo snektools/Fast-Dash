@@ -1,16 +1,17 @@
 import pandas as pd
 import pathlib
 
+
 class MultipleFileDataSource:
     def __init__(
-            self,
-            csv_folder_path: str,
-            meta_data_engine,
-            read_csv_engine = pd.read_csv,
-            file_name_pattern: str = '*TestData.csv',
-            recursive: bool = False,
-            cache=None,
-            load_filter=None,
+        self,
+        csv_folder_path: str,
+        meta_data_engine,
+        read_csv_engine=pd.read_csv,
+        file_name_pattern: str = "*TestData.csv",
+        recursive: bool = False,
+        cache=None,
+        load_filter=None,
     ):
         self._csv_folder_path = pathlib.Path(csv_folder_path)
         self._recursive = recursive
@@ -42,11 +43,7 @@ class MultipleFileDataSource:
         for file_stem, file_path in self._files_paths.items():
             print(file_stem)
             temp_file = self._read_csv_engine(file_path)
-            self._files.update(
-                {
-                    file_stem: None
-                }
-            )
+            self._files.update({file_stem: None})
             self._meta_engine.add_cycle(file_stem, temp_file)
 
     def _get_file_paths(self):
@@ -62,30 +59,26 @@ class MultipleFileDataSource:
         }
 
     def _get_ids(self, ids):
-        return {
-            id: self._read_csv_engine(self._files[id])
-            for id in ids
-        }
+        return {id: self._read_csv_engine(self._files[id]) for id in ids}
 
     @property
     def ids(self):
         return tuple(self._files.keys())
 
-
     def query(
-            self,
-            units_passed=True,
-            units_failed=True,
-            partial_trace=None,
-            type=None,
-            machine=None,
-            cycle_id=None,
+        self,
+        units_passed=True,
+        units_failed=True,
+        partial_trace=None,
+        type=None,
+        machine=None,
+        cycle_id=None,
     ):
         if cycle_id:
             if cycle_id in self._files:
                 return self._files[cycle_id]
             else:
-                raise Exception('The cycle requested.')
+                raise Exception("The cycle requested.")
 
         queried_cycle_ids = self._meta_engine.query_cycles(
             units_passed,
@@ -95,6 +88,3 @@ class MultipleFileDataSource:
             machine,
         )
         return self._get_ids(queried_cycle_ids)
-
-
-

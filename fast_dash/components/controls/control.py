@@ -3,9 +3,12 @@ from abc import abstractmethod
 from fast_dash.components import CoreComponent
 
 
-
 class Control(CoreComponent):
-    def __init__(self, values: dict = None, default_value=None,):
+    def __init__(
+        self,
+        values: dict = None,
+        default_value=None,
+    ):
         self._values = values
         self._assign_id()
         self._update_values()
@@ -16,20 +19,17 @@ class Control(CoreComponent):
         if isinstance(self._values, dict):
             values = self._values
         else:
-            values = {
-                item: item
-                for item in self._values
-            }
+            values = {item: item for item in self._values}
         self._options = [
             {
-                'label': key,
-                'value': value,
+                "label": key,
+                "value": value,
             }
             for key, value in values.items()
         ]
 
     def _create_default_value(self):
-        return self._options[0]['value']
+        return self._options[0]["value"]
 
     @abstractmethod
     def _create_component(self):
@@ -46,8 +46,3 @@ class Control(CoreComponent):
     def update_component(self, values):
         self._value = values
         self._update_values()
-
-
-
-
-

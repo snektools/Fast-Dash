@@ -10,7 +10,7 @@ class CoreComponent(ABC):
         return cls.__name__
 
     def _assign_id(self):
-        new_id = self._get_name() + '_' + secrets.token_urlsafe(6)
+        new_id = self._get_name() + "_" + secrets.token_urlsafe(6)
         if new_id in self.ids:
             self._assign_id()
         else:

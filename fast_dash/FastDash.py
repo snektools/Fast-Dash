@@ -4,7 +4,7 @@ import dash_core_components as dcc
 
 
 class FastDash(Dash):
-    _default_tab_name = 'Home'
+    _default_tab_name = "Home"
 
     def __init__(self, has_tabs=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -21,11 +21,7 @@ class FastDash(Dash):
         if tab_name in self._tabs:
             self._tabs[tab_name].append(pane)
         else:
-            self._tabs.update(
-                {
-                    tab_name: [pane]
-                }
-            )
+            self._tabs.update({tab_name: [pane]})
         self._update_layout()
         self._register_callbacks(pane)
 
@@ -44,10 +40,7 @@ class FastDash(Dash):
             [
                 dcc.Tabs(
                     [
-                        dcc.Tab(
-                            label=name,
-                            children=self._build_page(tab_name=name)
-                        )
+                        dcc.Tab(label=name, children=self._build_page(tab_name=name))
                         for name, panes in self._tabs.items()
                         if panes
                     ]
@@ -60,12 +53,7 @@ class FastDash(Dash):
 
     def _build_page(self, tab_name=None):
         tab_name = tab_name or self._default_tab_name
-        return html.Div(
-            [
-                pane.get_layout()
-                for pane in self._tabs[tab_name]
-            ]
-        )
+        return html.Div([pane.get_layout() for pane in self._tabs[tab_name]])
 
     def _register_callbacks(self, pane):
         for cb in pane:
