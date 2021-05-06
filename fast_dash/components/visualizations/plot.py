@@ -93,7 +93,10 @@ class Plot(CoreComponent):
         self._go_layout = go.Layout()
 
     def _build_figure(self):
-        self._figure = {'data': self._go_data, 'layout': self._go_layout}
+        self._figure = go.Figure(data=self._go_data, layout=self._go_layout)
+
+    def _post_process_figure(self):
+        pass
 
     def update_component(self, **kwargs):
         kwargs = self._set_arguments(**kwargs)
@@ -101,6 +104,7 @@ class Plot(CoreComponent):
         self._build_plot_data(**kwargs)
         self._build_layout(**kwargs)
         self._build_figure()
+        self._post_process_figure()
         return self._figure
 
     def _build_dash_component(self, **kwargs):
