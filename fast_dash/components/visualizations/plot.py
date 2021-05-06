@@ -7,16 +7,18 @@ from fast_dash.components import CoreComponent
 
 class Plot(CoreComponent):
     def __init__(
-            self,
-            data_source,
-            colorway=None,
-            style=None,
-            static_data_args=None,
-            **kwargs
+        self, data_source, colorway=None, style=None, static_data_args=None, **kwargs
     ):
         self._assign_id()
         self._data_source = data_source
-        self._colorway = colorway or ['#581845', '#900C3F', '#C70039', '#FF5733', '#FFC300', '#DAF7A6']
+        self._colorway = colorway or [
+            "#581845",
+            "#900C3F",
+            "#C70039",
+            "#FF5733",
+            "#FFC300",
+            "#DAF7A6",
+        ]
         self._style = style
         self._go_data = None
         self._go_layout = None
@@ -51,12 +53,9 @@ class Plot(CoreComponent):
         new_arguments = current_arguments - previous_arguments
 
         self._user_arguments = {
-            argument: self.__getattribute__(argument)
-            for argument in new_arguments
+            argument: self.__getattribute__(argument) for argument in new_arguments
         }
-        self._user_arguments.update(
-            self._static_data_args
-        )
+        self._user_arguments.update(self._static_data_args)
 
     def _set_arguments(self, **kwargs) -> dict:
         for argument, default_value in self._user_arguments.items():
@@ -79,10 +78,10 @@ class Plot(CoreComponent):
 
         self.__setattr__(arg_name, value)
 
-    def get_output(self, component_property='figure'):
+    def get_output(self, component_property="figure"):
         return [Output(component_id=self._id, component_property=component_property)]
 
-    def get_input(self, component_property='select'):
+    def get_input(self, component_property="select"):
         return [Input(component_id=self._id, component_property=component_property)]
 
     @abstractmethod
@@ -109,14 +108,12 @@ class Plot(CoreComponent):
 
     def _build_dash_component(self, **kwargs):
         self.update_component(**kwargs)
-        self.dash_component = dcc.Graph(id=self._id, figure=self._figure, style=self._style)
+        self.dash_component = dcc.Graph(
+            id=self._id, figure=self._figure, style=self._style
+        )
 
 
-def daves_function(
-        arg1: str,
-        arg2:int,
-        arg3: float=0
-) -> bool:
+def daves_function(arg1: str, arg2: int, arg3: float = 0) -> bool:
     """
 
     :param arg1:
