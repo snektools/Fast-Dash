@@ -111,17 +111,18 @@ class Plot(CoreComponent):
         self.update_component(**kwargs)
         self.dash_component = dcc.Graph(id=self._id, figure=self._figure, style=self._style)
 
+    def add_vlines(self, x_values: list, y0: float, y1: float, name: str, line: dict = None,):
 
-def daves_function(
-        arg1: str,
-        arg2:int,
-        arg3: float=0
-) -> bool:
-    """
-
-    :param arg1:
-    :param arg2:
-    :param arg3:
-    :return:
-    """
-    return True
+        self._go_data += [
+            go.Scatter(
+                x=[x, x],
+                y=[y0, y1],
+                name='Auto Offset',
+                mode='lines',
+                hoverinfo='skip',
+                legendgroup=name,
+                showlegend=not index,
+                line=line if line else dict(color='green', width=1, dash='dot')
+            )
+            for index, x in enumerate(x_values)
+        ]
