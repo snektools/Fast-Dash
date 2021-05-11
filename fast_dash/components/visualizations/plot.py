@@ -117,7 +117,7 @@ class Plot(CoreComponent):
             go.Scatter(
                 x=[x, x],
                 y=[y0, y1],
-                name='Auto Offset',
+                name=name,
                 mode='lines',
                 hoverinfo='skip',
                 legendgroup=name,
